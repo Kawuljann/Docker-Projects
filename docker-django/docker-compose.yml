@@ -1,0 +1,27 @@
+version: '3'
+services:
+  web:
+    container_name: webcontainer
+    build: .
+    working_dir: /code
+    command: pyhton3 manage.py runserver 0.0.0.0:8000
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+
+  db:
+    container_name: dbcontainer
+    image: mysql:5.7
+    restart: always
+    environment:
+       MYSQL_DATABASE: "my-db"
+       MYSQL_USER: root
+       MYSQL_PASSWORD: password
+       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - 3307:3306
